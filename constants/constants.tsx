@@ -1,0 +1,1 @@
+export const defaultNumberSize: number = 3;

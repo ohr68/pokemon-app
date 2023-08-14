@@ -16,7 +16,7 @@ async function ApiRequest(
                 ...data
             }
         }
-
+        
         api[method](endPoint, data)
             .then((result: any) => {
                 const { data } = result;
@@ -37,7 +37,7 @@ async function ApiRequest(
                     }
 
                     if (!error.response.data.message) {
-                        return reject(error.response.data || "Erro de conexao." );
+                        return reject(error.response.data || "Erro de conexao.");
                     }
 
                     return reject(error.response.data.message);

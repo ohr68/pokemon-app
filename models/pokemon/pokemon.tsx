@@ -1,3 +1,6 @@
+import TypeSlot from "../type-slot";
+import Sprites from "./sprites";
+
 export default class Pokemon {
     id: number
     name: string
@@ -14,9 +17,9 @@ export default class Pokemon {
     moves: Array<any>
     pastTypes: Array<any>
     species: Array<any>
-    sprites: any
+    sprites: Sprites
     stats: Array<any>
-    types: Array<any>
+    types: Array<TypeSlot>
 
     constructor(id: number,
         name: string,
