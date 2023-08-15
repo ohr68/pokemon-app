@@ -15,7 +15,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       inset: {
-        '-98': '-31rem',
+        '-98': '-30rem',
       }
     },
   },

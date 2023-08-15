@@ -7,24 +7,27 @@ import Typography from '@mui/material/Typography';
 import { getFormattedNumber } from '@/utils/string-functions';
 import Image from "next/image";
 import EvolutionDetails from '@/components/evolution/evolution-details';
-import { fetchPokemon, fetchSpecies } from '@/requests/pokemon-details';
+import { fetchPokemon } from '@/requests/pokemon-request-service';
 import Pokemon from '@/models/pokemon/pokemon';
-import Species from '@/models/species/species';
+import TypeColorPattern, { getBgClassForType } from '@/helpers/tipe-background-helper';
 
 export default function Details() {
   const [pokemon, setPokemon] = useState<Pokemon | null>();
-  const [species, setSpecies] = useState<Species | null>();
   const [state, setState] = useState<'loading' | 'done' | null>(null);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [value, setValue] = useState(0);
+  const [bgColor, setBgColor] = useState<TypeColorPattern>();
 
 
   useEffect(() => {
     setState('loading');
 
     fetchPokemon()
-      .then((response: Pokemon) => setPokemon(response))
-      .then(() => setState('done'))     
+      .then((response: Pokemon) => {
+        setPokemon(response);
+        setBgColor(getBgClassForType(response.types[0].type.name));
+      })
+      .then(() => setState('done'))
       .catch((error) => {
         console.log(error);
       });
@@ -69,17 +72,17 @@ export default function Details() {
     );
 
   return (
-    <div data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen bg-emerald-400">
+    <div data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen" style={{ background: bgColor?.background }}>
       <div className="flex flex-col flex-wrap w-full h-full">
-        <div className="flex flex-col rounded-t-3xl bg-none h-1/2 mx-10">
+        <div className="flex flex-col rounded-t-3xl bg-none h-2/5 mx-10">
           <div className="flex mt-10">
             <div className="flex w-full justify-between py-6">
-              <BiArrowBack className="cursor-pointer text-white w-14 h-10"></BiArrowBack>
+              <BiArrowBack className="cursor-pointer text-white w-14 h-10" />
               <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
                 {
                   isHovered ?
-                    <BiSolidHeart className="cursor-pointer text-white w-14 h-10"></BiSolidHeart> :
-                    <BiHeart className="cursor-pointer text-white w-14 h-10"></BiHeart>
+                    <BiSolidHeart className="cursor-pointer text-white w-14 h-10" /> :
+                    <BiHeart className="cursor-pointer text-white w-14 h-10" />
                 }
               </div>
             </div>
@@ -94,7 +97,7 @@ export default function Details() {
             <div className="flex items-center">
               {
                 pokemon.types.map((type) => {
-                  return <div key={type.slot} className="flex bg-emerald-300 rounded-full mr-4">
+                  return <div key={type.slot} className="flex rounded-full mr-4" style={{ background: bgColor?.typePill }}>
                     <span className="font-bold capitalize text-white text-lg px-10 py-2">{type.type.name}</span>
                   </div>
                 })
@@ -105,14 +108,14 @@ export default function Details() {
             </div> */}
           </div>
         </div>
-        <div className="flex relative flex-col justify-center items-center w-fill z-10">
+        <div className="flex relative flex-col justify-center items-center w-full z-10">
           <div className="flex w-1/2 place-content-center h-1/12">
             <Image src={pokemon.sprites.other.home.frontDefault} width={550} height={550} alt="teste"
               className="absolute -top-98" />
           </div>
         </div>
-        <div className="flex flex-col items-end rounded-t-3xl bg-white w-full h-1/2 mx">
-          <div className="flex flex-col w-full mt-4 py-10 px-10">
+        <div className="flex flex-col items-end rounded-t-3xl bg-white w-full h-3/5 mx overflow-y-hidden">
+          <div className="flex flex-col w-full mt-4 py-8 px-10">
             <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
               <Tabs
                 value={value}
