@@ -10,6 +10,8 @@ import EvolutionDetails from '@/components/evolution/evolution-details';
 import { fetchPokemon } from '@/requests/pokemon-request-service';
 import Pokemon from '@/models/pokemon/pokemon';
 import TypeColorPattern, { getBgClassForType } from '@/helpers/tipe-background-helper';
+import pokeball from '@/icons/pokeball-icon.png';
+import { MainDiv } from '@/styles/details/style';
 
 export default function Details() {
   const [pokemon, setPokemon] = useState<Pokemon | null>();
@@ -72,7 +74,11 @@ export default function Details() {
     );
 
   return (
-    <div data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen" style={{ background: bgColor?.background }}>
+    <MainDiv data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen" 
+    css={{
+        '--bg-color': bgColor?.background, 
+        '--bg-image': `url(${pokeball.src})`
+      }}>
       <div className="flex flex-col flex-wrap w-full h-full">
         <div className="flex flex-col rounded-t-3xl bg-none h-2/5 mx-10">
           <div className="flex mt-10">
@@ -122,10 +128,10 @@ export default function Details() {
                 onChange={handleChange}
                 centered
               >
-                <Tab label="About" className="flex w-full capitalize font-bold md:text-xl lg:text-xl" {...a11yProps(0)} />
-                <Tab label="Base Stats" className="flex w-full capitalize font-bold md:text-xl lg:text-xl" {...a11yProps(1)} />
-                <Tab label="Evolution" className="flex w-full capitalize font-bold md:text-xl lg:text-xl" {...a11yProps(2)} />
-                <Tab label="Moves" className="flex w-full capitalize font-bold md:text-xl lg:text-xl" {...a11yProps(3)} />
+                <Tab label="About" style={{ display: 'flex', width: '100%', fontWeight: 'bold', textTransform: 'capitalize', fontSize: '1.4rem' }} {...a11yProps(0)} />
+                <Tab label="Base Stats" style={{ display: 'flex', width: '100%', fontWeight: 'bold', textTransform: 'capitalize', fontSize: '1.4rem' }} {...a11yProps(1)} />
+                <Tab label="Evolution" style={{ display: 'flex', width: '100%', fontWeight: 'bold', textTransform: 'capitalize', fontSize: '1.4rem' }} {...a11yProps(2)} />
+                <Tab label="Moves" style={{ display: 'flex', width: '100%', fontWeight: 'bold', textTransform: 'capitalize', fontSize: '1.4rem' }} {...a11yProps(3)} />
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
@@ -143,6 +149,6 @@ export default function Details() {
           </div>
         </div>
       </div>
-    </div>
+    </MainDiv>
   )
 }

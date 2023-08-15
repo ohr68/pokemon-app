@@ -7,6 +7,8 @@ import EvolutionDetailsViewModel from '@/view-models/evolution-details-view-mode
 import EvolutionChain from '@/models/evolution/evolution-chain';
 import { speciesUrl } from '@/constants/constants';
 import { BiRightArrowAlt } from 'react-icons/bi';
+import pokeball from '@/icons/pokeball-icon.png';
+import { ImageDiv } from '@/styles/details/evolution-chain';
 
 export default function EvolutionDetails({ id: id }) {
   const [evolutionDetails, setEvolutionDetails] = useState<Array<EvolutionDetailsViewModel> | null>();
@@ -86,11 +88,11 @@ export default function EvolutionDetails({ id: id }) {
       <div className="flex flex-col flex-wrap divide-y divide-solid w-full">
         {
           evolutionDetails.map((pokemon, index) => {
-            return <div key={index} className="flex flex-row justify-center items-center w-full my">
+            return <div key={index} className="flex flex-row justify-center items-center w-full">
               <div data-id={pokemon.id} className="flex flex-wrap items-center justify-center w-1/3">
-                <div className="flex flex-col justify-center">
-                  <Image src={pokemon.imageUrl} width={200} height={200} alt="teste" />
-                </div>
+                <ImageDiv className="flex flex-col justify-center my-2" css={{'--bg-image': `url(${pokeball.src})`}}>
+                  <Image src={pokemon.imageUrl} width={180} height={180} alt="teste" />
+                </ImageDiv>
                 <div className="flex flex-col justify-center mt w-full">
                   <span className="font-bold text-center text-lg capitalize">{pokemon.name}</span>
                 </div>
@@ -100,12 +102,13 @@ export default function EvolutionDetails({ id: id }) {
                   <BiRightArrowAlt className="text-gray-200 w-32 h-10" />
                 </div>
                 <div className="flex flex-col w-full">
-                  <span className="font-bold text-xl">Lvl {pokemon.minLevelToEvolve ?? '??'}</span>
+                  <span className="font-bold text-xl"> Lvl {pokemon.minLevelToEvolve ?? '??'}</span>
                 </div>
               </div>
               <div data-id={pokemon.evolutionId} className="flex flex-wrap items-center justify-center w-1/3">
-                <div className="flex flex-col justify-center">
-                  <Image src={pokemon.evolutionImageUrl} width={200} height={200} alt="teste" />  </div>
+                <ImageDiv className="flex flex-col justify-center my-2">
+                  <Image src={pokemon.evolutionImageUrl} width={180} height={180} alt="teste" />  
+                </ImageDiv>
                 <div className="flex flex-col justify-center mt w-full">
                   <span className="font-bold text-center text-lg capitalize">{pokemon.evolutionName}</span>
                 </div>
