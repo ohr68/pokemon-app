@@ -22,8 +22,8 @@ export const getBgClassForType = (pokemonType: string): TypeColorPattern => {
             );
         case "grass":
             return new TypeColorPattern(
-                'linear-gradient(90deg, rgb(83, 205, 0) 16%, rgba(204,255,216,1) 43%, rgba(134,255,85,1) 81%)',
-                '#3f9605'
+                'linear-gradient(90deg, rgba(4,116,0,1) 0%, rgba(131,232,129,1) 45%, rgba(25,139,63,1) 100%)',
+                '#8ea87c'
             );
         case "electric":
             return new TypeColorPattern(
@@ -55,6 +55,17 @@ export const getBgClassForType = (pokemonType: string): TypeColorPattern => {
                 'linear-gradient(90deg, rgba(106,104,107,1) 21%, rgba(148,145,145,1) 50%, rgba(94,92,92,1) 97%)',
                 '#b5b3b6'
             );
+        case "normal": 
+            return new TypeColorPattern(
+                'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)',
+                '#4f8083'
+            )
+        case "rock": {
+            return new TypeColorPattern(
+                'linear-gradient(90deg, rgba(70,70,70,1) 0%, rgba(217,217,226,1) 45%, rgba(148,148,148,1) 100%)',
+                '#202020'
+            )
+        }
         default:
             return new TypeColorPattern(
                 'linear-gradient(90deg, rgba(83,205,0,1) 16%, rgba(204,255,216,1) 43%, rgba(134,255,85,1) 81%)',

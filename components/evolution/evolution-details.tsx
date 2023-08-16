@@ -8,7 +8,7 @@ import EvolutionChain from '@/models/evolution/evolution-chain';
 import { speciesUrl } from '@/constants/constants';
 import { BiRightArrowAlt } from 'react-icons/bi';
 import pokeball from '@/icons/pokeball-icon.png';
-import { ImageDiv } from '@/styles/details/evolution-chain';
+import { EvolutionChainHeader, EvolutionDiv, ImageDiv } from '@/styles/details/evolution-chain';
 
 export default function EvolutionDetails({ id: id }) {
   const [evolutionDetails, setEvolutionDetails] = useState<Array<EvolutionDetailsViewModel> | null>();
@@ -81,16 +81,16 @@ export default function EvolutionDetails({ id: id }) {
     );
 
   return (
-    <div className="flex flex-wrap w-full h-full max-h-full">
+    <EvolutionDiv className="flex flex-wrap w-full">
       <div className="flex-col w-full">
-        <h2 className="font-bold text-2xl">Evolution Chain</h2>
+        <EvolutionChainHeader className="font-bold text-2xl">Evolution Chain</EvolutionChainHeader>
       </div>
       <div className="flex flex-col flex-wrap divide-y divide-solid w-full">
         {
           evolutionDetails.map((pokemon, index) => {
             return <div key={index} className="flex flex-row justify-center items-center w-full">
               <div data-id={pokemon.id} className="flex flex-wrap items-center justify-center w-1/3">
-                <ImageDiv className="flex flex-col justify-center my-2" css={{'--bg-image': `url(${pokeball.src})`}}>
+                <ImageDiv className="flex flex-col justify-center my-2" css={{ '--bg-image': `url(${pokeball.src})` }}>
                   <Image src={pokemon.imageUrl} width={180} height={180} alt="teste" />
                 </ImageDiv>
                 <div className="flex flex-col justify-center mt w-full">
@@ -107,7 +107,7 @@ export default function EvolutionDetails({ id: id }) {
               </div>
               <div data-id={pokemon.evolutionId} className="flex flex-wrap items-center justify-center w-1/3">
                 <ImageDiv className="flex flex-col justify-center my-2">
-                  <Image src={pokemon.evolutionImageUrl} width={180} height={180} alt="teste" />  
+                  <Image src={pokemon.evolutionImageUrl} width={180} height={180} alt="teste" />
                 </ImageDiv>
                 <div className="flex flex-col justify-center mt w-full">
                   <span className="font-bold text-center text-lg capitalize">{pokemon.evolutionName}</span>
@@ -117,6 +117,6 @@ export default function EvolutionDetails({ id: id }) {
           })
         }
       </div>
-    </div>
+    </EvolutionDiv>
   )
 }

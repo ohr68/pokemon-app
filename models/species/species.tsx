@@ -1,4 +1,6 @@
+import FlavorText from "../about/flavor-text"
 import LinkDetails from "../link-details"
+import Gender from "./gender"
 
 export default class Species {
     id: number
@@ -8,10 +10,11 @@ export default class Species {
     eggGroups: Array<LinkDetails>
     evolutionChain: LinkDetails
     evolvesFromSpecies: any | null
-    flavorTextEntries: Array<any>
+    flavorTextEntries: Array<FlavorText>
     formDescriptions: Array<any>
     formsSwitchable: boolean
     genderRate: number
+    genera: Array<Gender>
     habitat: LinkDetails
     hasGenderDifferences: boolean
     hatchCounter: number
@@ -36,6 +39,7 @@ export default class Species {
         formDescriptions: Array<any>,
         formsSwitchable: boolean,
         genderRate: number,
+        genera: Array<Gender>,
         habitat: LinkDetails,
         hasGenderDifferences: boolean,
         hatchCounter: number,
@@ -59,6 +63,7 @@ export default class Species {
             this.formDescriptions = formDescriptions;
             this.formsSwitchable = formsSwitchable;
             this.genderRate = genderRate;
+            this.genera = genera;
             this.habitat = habitat;
             this.hasGenderDifferences = hasGenderDifferences;
             this.hatchCounter = hatchCounter;

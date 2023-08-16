@@ -1,4 +1,4 @@
-import TypeSlot from "../type-slot";
+import TypeSlot from "./type-slot";
 import Sprites from "./sprites";
 
 export default class Pokemon {

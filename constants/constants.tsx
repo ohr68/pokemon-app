@@ -1,2 +1,10 @@
 export const defaultNumberSize: number = 3;
 export const speciesUrl = `${process.env.NEXT_PUBLIC_REACT_APP_API_BASE_URL}pokemon-species/`;
+export const convertToInchValue = 3.93701;
+export const convertToCmValue = 10;
+export const convertToKgValue = 10;
+export const convertToLbsValue = 4.536;
+export const femaleId = 1;
+export const maleId = 2;
+export const eightsValue = 8;
+export const maxEggGroups = 15;

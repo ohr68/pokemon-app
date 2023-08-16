@@ -1,4 +1,4 @@
-import LinkDetails from "./link-details";
+import LinkDetails from "../link-details";
 
 export default class TypeSlot {
     slot: number

@@ -1,10 +1,12 @@
 import Evolution from "@/models/evolution/evolution";
 import Pokemon from "@/models/pokemon/pokemon";
+import Gender from "@/models/gender/gender";
 import Species from "@/models/species/species";
 import { apiGet } from "@/services/api-service";
+import EggGroup from "@/models/egg-group/egg-group";
 
 export const fetchPokemon = async (): Promise<Pokemon> => {
-  return await apiGet('pokemon/gengar', null, null);
+  return await apiGet('pokemon/charizard', null, null);
 }
 
 export const fetchOnePokemon = async (name: string): Promise<Pokemon> => {
@@ -16,6 +18,14 @@ export const fetchSpecies = async (name: string): Promise<Species> => {
 }
 
 export const fetchEvolutionChain = async (endpoint: string): Promise<Evolution> => {
+  return await apiGet(endpoint, null, null);
+}
+
+export const fetchBreeding = async (genderId: number): Promise<Gender> => {
+  return await apiGet(`gender/${genderId}`, null, null);
+}
+
+export const fetchEggGroups = async (endpoint: string): Promise<EggGroup> => {
   return await apiGet(endpoint, null, null);
 }
 

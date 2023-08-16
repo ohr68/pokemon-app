@@ -7,14 +7,17 @@ import Typography from '@mui/material/Typography';
 import { getFormattedNumber } from '@/utils/string-functions';
 import Image from "next/image";
 import EvolutionDetails from '@/components/evolution/evolution-details';
-import { fetchPokemon } from '@/requests/pokemon-request-service';
+import { fetchPokemon, fetchSpecies } from '@/requests/pokemon-request-service';
 import Pokemon from '@/models/pokemon/pokemon';
 import TypeColorPattern, { getBgClassForType } from '@/helpers/tipe-background-helper';
 import pokeball from '@/icons/pokeball-icon.png';
 import { MainDiv } from '@/styles/details/style';
+import About from '@/components/about';
+import Gender from '@/models/species/gender';
 
 export default function Details() {
   const [pokemon, setPokemon] = useState<Pokemon | null>();
+  const [description, setDescription] = useState<string>('');
   const [state, setState] = useState<'loading' | 'done' | null>(null);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [value, setValue] = useState(0);
@@ -22,17 +25,28 @@ export default function Details() {
 
 
   useEffect(() => {
-    setState('loading');
 
-    fetchPokemon()
-      .then((response: Pokemon) => {
-        setPokemon(response);
-        setBgColor(getBgClassForType(response.types[0].type.name));
-      })
-      .then(() => setState('done'))
-      .catch((error) => {
+    const fetchPokemonData = async () => {
+      try {
+        setState('loading');
+
+        const pokemonData = await fetchPokemon();
+        const species = await fetchSpecies(pokemonData.name);
+
+        setPokemon(pokemonData);
+        setBgColor(getBgClassForType(pokemonData.types[0].type.name));
+        setDescription(getGenera(species.genera));
+
+      } catch (error) {
         console.log(error);
-      });
+      }
+      finally {
+        setState('done');
+      }
+    }
+
+    fetchPokemonData();
+
   }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -66,6 +80,20 @@ export default function Details() {
     };
   }
 
+  const getGenera = (genera: Array<Gender>): string => {
+    let choosenLanguage = 'en'; // TODO: modify when translator is implemented
+    let description = '';
+
+    for (const gender of genera) {
+      if (gender.language.name === choosenLanguage) {
+        description = gender.genus;
+        break;
+      }
+    }
+
+    return description;
+  }
+
   if (!pokemon || state === 'loading')
     return (
       <div className="flex h-screen w-full items-center justify-center bg-stone-900 text-white">
@@ -74,9 +102,9 @@ export default function Details() {
     );
 
   return (
-    <MainDiv data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen" 
-    css={{
-        '--bg-color': bgColor?.background, 
+    <MainDiv data-id={pokemon.id} className="flex flex-wrap justify-center w-full h-screen"
+      css={{
+        '--bg-color': bgColor?.background,
         '--bg-image': `url(${pokeball.src})`
       }}>
       <div className="flex flex-col flex-wrap w-full h-full">
@@ -109,14 +137,14 @@ export default function Details() {
                 })
               }
             </div>
-            {/* <div className="">
-              <span className="text-white text-xl px-6">Seed Pokemon</span>
-            </div> */}
+            <div className="">
+              <span className="text-white text-2xl px-6">{description}</span>
+            </div>
           </div>
         </div>
         <div className="flex relative flex-col justify-center items-center w-full z-10">
           <div className="flex w-1/2 place-content-center h-1/12">
-            <Image src={pokemon.sprites.other.home.frontDefault} width={550} height={550} alt="teste"
+            <Image src={pokemon.sprites.other.home.frontDefault} width={500} height={500} alt="teste"
               className="absolute -top-98" />
           </div>
         </div>
@@ -135,7 +163,7 @@ export default function Details() {
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel hic unde, sed velit rem ducimus ab sint eos, consequatur distinctio expedita perferendis? Provident non praesentium voluptatum laborum id quibusdam sunt impedit accusamus nisi esse delectus, consectetur ullam ex labore voluptatem! Consequatur quos quae eveniet distinctio laborum possimus beatae laboriosam aut, asperiores explicabo. Harum ratione sequi, deleniti illum dicta, velit iure blanditiis quos suscipit voluptate voluptates ipsum nulla iste modi atque, alias explicabo. Placeat, molestias mollitia voluptates perferendis ipsum aut ab rem! Saepe explicabo alias ipsum accusamus nesciunt sed quaerat consequatur. Vitae, voluptatem eligendi deleniti error quo pariatur eos necessitatibus corporis.
+              <About speciesId={pokemon.id} currentPokemon={pokemon} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam doloribus eos asperiores, aliquid exercitationem voluptates. Tempore sint rem incidunt fugit recusandae veritatis porro deleniti atque? Mollitia assumenda illum quia temporibus commodi. Debitis facilis at natus nostrum laudantium qui enim culpa ducimus provident voluptas, voluptatem repudiandae maxime corporis aut libero vitae sapiente a animi. Perferendis debitis voluptatem nostrum illum amet pariatur dicta quaerat sed reiciendis provident, deserunt vitae hic autem quae incidunt voluptates optio cumque voluptatum fugit neque? Laborum explicabo ratione saepe labore cum rerum id? Perspiciatis dolorum ipsa et ut facilis quis quisquam a doloribus, dignissimos, eveniet ratione mollitia illum.
