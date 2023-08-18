@@ -9,6 +9,10 @@ export const fetchPokemon = async (): Promise<Pokemon> => {
   return await apiGet('pokemon/charizard', null, null);
 }
 
+export const fetchPokemonById = async (id: number): Promise<Pokemon> => {
+  return await apiGet(`pokemon/${id}`, null, null);
+}
+
 export const fetchOnePokemon = async (name: string): Promise<Pokemon> => {
   return await apiGet(`pokemon/${name}`, null, null);
 }
