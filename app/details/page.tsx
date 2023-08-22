@@ -7,30 +7,36 @@ import Typography from '@mui/material/Typography';
 import { getFormattedNumber } from '@/utils/string-functions';
 import Image from "next/image";
 import EvolutionDetails from '@/components/evolution/evolution-details';
-import { fetchPokemon, fetchSpecies } from '@/requests/pokemon-request-service';
+import { fetchPokemonById, fetchSpecies } from '@/requests/pokemon-request-service';
 import Pokemon from '@/models/pokemon/pokemon';
 import TypeColorPattern, { getBgClassForType } from '@/helpers/tipe-background-helper';
 import pokeball from '@/icons/pokeball-icon.png';
 import { MainDiv } from '@/styles/details/style';
-import About from '@/components/about';
+import About from '@/components/about/about';
 import Gender from '@/models/species/gender';
+import { useSearchParams } from 'next/navigation';
+import ActiveLink from '@/components/active-link';
+import Loading from '@/components/loading';
 
 export default function Details() {
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [description, setDescription] = useState<string>('');
   const [state, setState] = useState<'loading' | 'done' | null>(null);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isHovering, setIsHovered] = useState<boolean>(false);
   const [value, setValue] = useState(0);
   const [bgColor, setBgColor] = useState<TypeColorPattern>();
+  const searchParams = useSearchParams();
 
+  const mouseEnter = () => setIsHovered(true);
+  const mouseLeave = () => setIsHovered(false);
 
   useEffect(() => {
-
     const fetchPokemonData = async () => {
       try {
         setState('loading');
 
-        const pokemonData = await fetchPokemon();
+        const id = searchParams.get('id');
+        const pokemonData = await fetchPokemonById(Number(id));
         const species = await fetchSpecies(pokemonData.name);
 
         setPokemon(pokemonData);
@@ -96,8 +102,8 @@ export default function Details() {
 
   if (!pokemon || state === 'loading')
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-stone-900 text-white">
-        Loading...
+      <div className="flex h-screen w-full items-center justify-center bg-white text-white">
+        <Loading />
       </div>
     );
 
@@ -111,10 +117,12 @@ export default function Details() {
         <div className="flex flex-col rounded-t-3xl bg-none h-2/5 mx-10">
           <div className="flex mt-10">
             <div className="flex w-full justify-between py-6">
-              <BiArrowBack className="cursor-pointer text-white w-14 h-10" />
-              <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+              <ActiveLink href={'/list/'} className={''} componentRef={null}>
+                <BiArrowBack className="cursor-pointer text-white w-14 h-10" />
+              </ActiveLink>
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}>
                 {
-                  isHovered ?
+                  isHovering ?
                     <BiSolidHeart className="cursor-pointer text-white w-14 h-10" /> :
                     <BiHeart className="cursor-pointer text-white w-14 h-10" />
                 }
@@ -144,7 +152,7 @@ export default function Details() {
         </div>
         <div className="flex relative flex-col justify-center items-center w-full z-10">
           <div className="flex w-1/2 place-content-center h-1/12">
-            <Image src={pokemon.sprites.other.home.frontDefault} width={500} height={500} alt="teste"
+            <Image src={pokemon.sprites.other.home.frontDefault ?? pokemon.sprites.other.officialArtwork?.frontDefault} width={500} height={500} alt="teste"
               className="absolute -top-98" />
           </div>
         </div>

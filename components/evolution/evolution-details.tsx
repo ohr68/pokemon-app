@@ -9,6 +9,7 @@ import { speciesUrl } from '@/constants/constants';
 import { BiRightArrowAlt } from 'react-icons/bi';
 import pokeball from '@/icons/pokeball-icon.png';
 import { EvolutionChainHeader, EvolutionDiv, ImageDiv } from '@/styles/details/evolution-chain';
+import Loading from '../loading';
 
 export default function EvolutionDetails({ id: id }) {
   const [evolutionDetails, setEvolutionDetails] = useState<Array<EvolutionDetailsViewModel> | null>();
@@ -75,9 +76,7 @@ export default function EvolutionDetails({ id: id }) {
 
   if (!evolutionDetails || loading === 'loading')
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-stone-900 text-white">
-        Loading Evolution Details...
-      </div>
+      <Loading />
     );
 
   return (

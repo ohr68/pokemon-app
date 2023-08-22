@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import GenderRateViewModel from "@/view-models/gender-rate-view-model";
 import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
 import EggGroup from "@/models/egg-group/egg-group";
+import Loading from "../loading";
 
 export default function About({ speciesId: id, currentPokemon: pokemon }) {
     const [species, setSpecies] = useState<Species | null>(null);
@@ -117,13 +118,11 @@ export default function About({ speciesId: id, currentPokemon: pokemon }) {
 
     if (loading === 'loading')
         return (
-            <div className="flex h-screen w-full items-center justify-center bg-stone-900 text-white">
-                Loading...
-            </div>
+            <Loading />
         );
 
     return (
-        <AboutDiv className="flex flex-col w-full">
+        <AboutDiv className="flex flex-col w-full py-10">
             <div className="flex flex-col w-full text-start">
                 <p className="text-md font-medium tracking-wide">{flavorText?.fullDescription}</p>
             </div>

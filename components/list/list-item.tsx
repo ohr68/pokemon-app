@@ -1,21 +1,38 @@
 import TypeColorPattern, { getBgClassForType } from "@/helpers/tipe-background-helper";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import pokeball from '@/icons/pokeball-icon.png';
 import { getFormattedNumber } from "@/utils/string-functions";
+import ActiveLink from "../active-link";
 
-export function ListItem({ pokemon: pokemon }) {
+export function ListItem({ pokemon, isLast, newLimit, currentFirstItem }) {
     const [id, setId] = useState<number>();
     const [bgColor, setBgColor] = useState<TypeColorPattern>();
     const [imageSrc, setImageSrc] = useState<string>();
+    const itemRef = useRef<HTMLAnchorElement>(); //Select the ListItem component with useRef
+
+    useEffect(() => {
+        if (!itemRef?.current)
+            return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (isLast && entry.isIntersecting) {
+                currentFirstItem();
+                newLimit();
+                observer.unobserve(entry.target);
+            }
+        });
+
+        observer.observe(itemRef.current);
+    }, [isLast]);
 
     useEffect(() => {
         setId(pokemon.id);
         setBgColor(getBgClassForType(pokemon.types[0].type.name));
-        setImageSrc(pokemon.sprites.other.home.frontDefault);
+        setImageSrc(pokemon.sprites.other.home.frontDefault ?? pokemon.sprites.other.officialArtwork.frontDefault); // newest generations doesn't have the 3d sprite like older ones
     }, []);
 
     return (
-        <div className="flex w-1/3 h-64 px-2 py-3 cursor-pointer">
+        <ActiveLink href={`/details?id=${pokemon.id}`} className="flex w-1/3 h-64 px-2 py-3 cursor-pointer" componentRef={itemRef}>
             <div className="flex flex-col w-full h-full rounded-lg mr-4 shadow-xl hover:border-4" style={{
                 backgroundImage: `url(${pokeball.src}), ${bgColor?.solidBackGroundColor}`,
                 backgroundSize: '30%, cover',
@@ -53,6 +70,6 @@ export function ListItem({ pokemon: pokemon }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </ActiveLink>
     )
 }

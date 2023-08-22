@@ -5,10 +5,6 @@ import Species from "@/models/species/species";
 import { apiGet } from "@/services/api-service";
 import EggGroup from "@/models/egg-group/egg-group";
 
-export const fetchPokemon = async (): Promise<Pokemon> => {
-  return await apiGet('pokemon/charizard', null, null);
-}
-
 export const fetchPokemonById = async (id: number): Promise<Pokemon> => {
   return await apiGet(`pokemon/${id}`, null, null);
 }
@@ -35,7 +31,7 @@ export const fetchEggGroups = async (endpoint: string): Promise<EggGroup> => {
 
 export const fecthImage = async (name: string): Promise<string | void> => {
   return await fetchOnePokemon(name)
-    .then((response: Pokemon) => { return response.sprites.other.home.frontDefault; })
+    .then((response: Pokemon) => { return response.sprites.other.home.frontDefault ?? response.sprites.other.officialArtwork?.frontDefault; })
     .catch((error) => {
       console.log(error);
     });

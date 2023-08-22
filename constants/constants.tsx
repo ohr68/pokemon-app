@@ -8,3 +8,4 @@ export const femaleId = 1;
 export const maleId = 2;
 export const eightsValue = 8;
 export const maxEggGroups = 15;
+export const maxIdsPerLoad = 100; 
