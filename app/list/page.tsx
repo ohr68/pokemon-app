@@ -64,15 +64,15 @@ export default function List() {
                 <div className="flex flex-col justify-center w-full my-16">
                     <h1 className="font-bold text-6xl">Pokedex</h1>
                 </div>
-                <div className="flex flex-wrap w-full overflow-y-auto" style={{ height: '800px', maxHeight: '800px' }}>
+                <div className="flex flex-wrap w-full overflow-y-auto shadow-xl rounded-md" style={{ height: '800px', maxHeight: '800px' }}>
                     {
-                        pokemons?.map((pokemon, index) => {                            
+                        pokemons?.map((pokemon, index) => {
                             const isLast = index === pokemons.length - 1;
 
                             return <ListItem key={pokemon.id}
                                 pokemon={pokemon}
-                                isLast={isLast}                                
-                                currentFirstItem={() => isLast ?  setFirstId(pokemons.length + 1) : 1}
+                                isLast={isLast}
+                                currentFirstItem={() => isLast ? setFirstId(pokemons.length + 1) : 1}
                                 newLimit={() => setLastId((lastId + 1) + maxIdsPerLoad)} />
                         })
                     }
